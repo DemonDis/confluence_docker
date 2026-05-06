@@ -9,11 +9,12 @@ services:
       - ATL_JDBC_USER=confluence
       - ATL_JDBC_PASSWORD=jellyfish
       - ATL_DB_DRIVER=org.postgresql.Driver
-      - ATL_DB_TYPE=postgres72
-      - ATL_PROXY_NAME=192.168.xx.xx
-      - ATL_PROXY_PORT=443
+      - ATL_DB_TYPE=postgresql
+      - ATL_PROXY_NAME=192.168.xxx.xx
+      - ATL_PROXY_PORT=8443
       - ATL_TOMCAT_SCHEME=https
       - ATL_TOMCAT_SECURE=true
+      - CATALINA_OPTS=-Dconfluence.jmx.disabled=true -Dspring.jmx.enabled=false -Dcom.sun.management.jmxremote=false -Djavax.management.builder.initial= -Dcom.sun.jmx.mbeanserver.MBeanServer=
     depends_on:
       - db
 
@@ -41,8 +42,8 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "8090:80"
-      - "8443:443"
+      - "8090:8090"
+      - "8443:8443"
     depends_on:
       - confluence
 
