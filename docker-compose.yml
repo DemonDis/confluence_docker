@@ -10,6 +10,10 @@ services:
       - ATL_JDBC_PASSWORD=jellyfish
       - ATL_DB_DRIVER=org.postgresql.Driver
       - ATL_DB_TYPE=postgres72
+      - ATL_PROXY_NAME=192.168.xx.xx
+      - ATL_PROXY_PORT=443
+      - ATL_TOMCAT_SCHEME=https
+      - ATL_TOMCAT_SECURE=true
     depends_on:
       - db
 
@@ -20,25 +24,25 @@ services:
       - POSTGRES_PASSWORD=jellyfish
       - POSTGRES_DB=confluencedb
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - confluence-postgres-data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
     ports:
-      - "5050:80"
+      - "5051:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@example.com
       - PGADMIN_DEFAULT_PASSWORD=admin
     depends_on:
       - db
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - confluence-pgadmin-data:/var/lib/pgadmin
 
   nginx:
     build: ./nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "8090:80"
+      - "8443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/ssl:/etc/nginx/ssl
@@ -48,5 +52,5 @@ services:
 volumes:
   confluence-data:
   confluence-logs:
-  postgres-data:
-  pgadmin-data:
+  confluence-postgres-data:
+  confluence-pgadmin-data:
